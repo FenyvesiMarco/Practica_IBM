@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .title {
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            border: 2px solid black;
+            text-align: center;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Results</h1>
+        <table>
+            <tr>
+                <th>Receiving Country Code</th>
+                <th>Sending Country Code</th>
+                <th>Count</th>
+            </tr>
+            {% for row in results %}
+                <tr>
+                    <td>{{ row['Receiving Country Code'] }}</td>
+                    <td>{{ row['Sending Country Code'] }}</td>
+                    <td>{{ row['Count'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
