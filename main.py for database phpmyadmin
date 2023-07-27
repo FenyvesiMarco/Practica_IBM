@@ -1,0 +1,26 @@
+import pyspark
+from pyspark.sql import SparkSession
+
+# Create SparkSession
+spark = SparkSession.builder.config("spark.jars", "mysql-connector-java-8.0.18.jar").getOrCreate()
+
+# Read CSV data into DataFrame
+df = spark.read.csv("Erasmus.csv", header=True)
+
+# Task 1: Grouping and filtering
+nation_codes = ["IT", "MK", "RO"]
+d3 = df.groupBy(["Receiving Country Code", "Sending Country Code"]).count()
+d4 = d3.filter(d3["Receiving Country Code"].isin(nation_codes)).orderBy(["Receiving Country Code", "Sending Country Code"])
+d4.show()
+
+# Task 2: Writing to MySQL tables
+jdbc_url = "jdbc:mysql://localhost:3306/ibm"
+connection_properties = {
+    "user": "root",
+    "password": "",
+    "driver": "com.mysql.cj.jdbc.Driver"
+}
+
+for code in nation_codes:
+    d2 = df.filter(df["Receiving Country Code"] == code).drop("Receiving Country Code")
+    d2.write.jdbc(url=jdbc_url, table=code, mode="overwrite", properties=connection_properties)
